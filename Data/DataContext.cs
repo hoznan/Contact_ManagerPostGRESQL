@@ -1,21 +1,3 @@
-// using Microsoft.EntityFrameworkCore;
-// using ContactManager.Models;
-
-// namespace ContactManager.Data
-// {
-//     public class DataContext : DbContext
-//     {
-//         public DataContext()
-//         {
-
-//         }
-
-//         public DataContext(DbContextOptions<DataContext> options) : base
-//         (options)
-//         { }
-//         public DbSet<TBLContact> tbl_Contact { get; set; }
-//     }
-// }
 using Microsoft.EntityFrameworkCore;
 using ContactManager.Models;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
@@ -33,7 +15,7 @@ namespace ContactManager.Data
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         { }
         public DbSet<TBLContact> tbl_contact { get; set; }
-        
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

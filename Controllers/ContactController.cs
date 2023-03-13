@@ -35,10 +35,10 @@ public class ContactController : ControllerBase
         List<TBLContact> objTAllContactList = _context.tbl_contact.OrderByDescending(i => i.id).ToList();
         return Ok(objTAllContactList);
     }
-  
+
     [HttpPost]
-        public async Task<ActionResult<TBLContact>> CreateContact (TBLContact contact)
-   
+    public async Task<ActionResult<TBLContact>> CreateContact(TBLContact contact)
+
     {
         // Validate the input
         if ((string.IsNullOrEmpty(contact.salutation) && contact.salutation.Length < 3) ||
@@ -59,13 +59,13 @@ public class ContactController : ControllerBase
 
         // Add the contact to the list
         // _contacts.Add(contact);
-          await _context.tbl_contact.AddAsync(contact);
-            await _context.SaveChangesAsync();
+        await _context.tbl_contact.AddAsync(contact);
+        await _context.SaveChangesAsync();
 
         return Ok(contact);
     }
     [HttpPut("{id}")]
-    public async Task<ActionResult<TBLContact>> UpdateContact (int id,TBLContact contact)
+    public async Task<ActionResult<TBLContact>> UpdateContact(int id, TBLContact contact)
     // public IActionResult UpdateContact(int id, Contact contact)
     {
         // Find the contact with the given ID
@@ -76,9 +76,9 @@ public class ContactController : ControllerBase
         }
 
         // Validate the input
-      if ((string.IsNullOrEmpty(contact.salutation) && contact.salutation.Length < 3) ||
-            (string.IsNullOrEmpty(contact.firstname) && contact.firstname.Length < 3) ||
-            (string.IsNullOrEmpty(contact.lastname) && contact.lastname.Length < 3) && (string.IsNullOrEmpty(contact.email)))
+        if ((string.IsNullOrEmpty(contact.salutation) && contact.salutation.Length < 3) ||
+              (string.IsNullOrEmpty(contact.firstname) && contact.firstname.Length < 3) ||
+              (string.IsNullOrEmpty(contact.lastname) && contact.lastname.Length < 3) && (string.IsNullOrEmpty(contact.email)))
         {
             return BadRequest("Invalid input");
         }
@@ -95,26 +95,26 @@ public class ContactController : ControllerBase
         // Set the last change timestamp
         existingContact.lastchangetimestamp = DateTime.UtcNow;
         // existingContact.lastchangetimestamp = contact.lastchangetimestamp.ToUniversalTime();
-          _context.tbl_contact.Update(existingContact);
-            await _context.SaveChangesAsync();
+        _context.tbl_contact.Update(existingContact);
+        await _context.SaveChangesAsync();
         return Ok(existingContact);
     }
-[HttpDelete("{id}")]
-public async Task<IActionResult> DeleteContact(int id)
-{
-    // Find the contact with the given ID
-    var contact = await _context.tbl_contact.FindAsync(id);
-    if (contact == null)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteContact(int id)
     {
-        return NotFound();
+        // Find the contact with the given ID
+        var contact = await _context.tbl_contact.FindAsync(id);
+        if (contact == null)
+        {
+            return NotFound();
+        }
+
+        // Remove the contact from the list
+        _context.tbl_contact.Remove(contact);
+        await _context.SaveChangesAsync();
+
+        return Ok();
     }
-
-    // Remove the contact from the list
-    _context.tbl_contact.Remove(contact);
-    await _context.SaveChangesAsync();
-
-    return Ok();
-}
 
 
 }
